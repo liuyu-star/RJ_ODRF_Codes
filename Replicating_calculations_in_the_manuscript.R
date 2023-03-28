@@ -9,11 +9,11 @@
 # install the R package 'ODRF', see preliminaries section of this document for details.
 
 
-## Data used in the manuscript
+## Data and scripts used in the manuscript
 #
-# Data and scripts used to create the manuscript are available in a supportingFiles
+# Data and scripts used to create the manuscript are available in a
 # Github project 'RJ_ODRF_Codes' that can be download from link 
-# https://github.com/liuyu-star/JSS_ODRF_Codes. The scripts and results can 
+# https://github.com/liuyu-star/JSS_ODRF_Codes. The scripts can 
 # alternatively be downloaded from the online RJ submission. 
 
 
@@ -21,21 +21,14 @@
 #
 # Data sets used in the manuscript are too large be submitted directly. However, 
 # you can access them by downloading the "Datasets" folder from
-#     https://github.com/liuyu-star/JSS_ODRF_Codes. 
+#     https://github.com/liuyu-star/RJ_ODRF_Codes. 
 # To do so, please ensure that you are in the current working directory of R and 
 # then proceed with the download.
-# ENTER DESTINATION PATH FOR REAL DATA DOWNLOADS.
-path_codes=file.path(getwd(), "RJ_ODRF_Codes")
-if (!file.exists(path_codes)){
-  dir.create(path_codes)
-}
-path_codes=file.path(getwd(), "RJ_ODRF_Codes")
-uil= "https://github.com/liuyu-star/JSS_ODRF_Codes/archive/refs/heads/main.zip"
-unzip(path_codes,files="Datasets",overwrite = FALSE)
 
+ 
 ## Attention
 #
-# Before proceeding with the Section 4 (Real examples) of the replication script, 
+# Before proceeding with the Section 4 (Real examples) of the manuscript, 
 # this file 'ODRF_calculations_in_the_manuscript.R' and 2 folders: 
 #     'Datasets', 
 #     'supportingFiles', 
@@ -497,58 +490,71 @@ plot(varimp, nvar = 10, digits = 0, main = "")
 
 ## ------------------------------------------------------------------------------------------------
 #' ## 4.3. Prediction Performance
+#' 
+## ENTER DESTINATION PATH FOR DATA DOWNLOADS.
+wd0=getwd()
+path_codes=file.path(wd0, "RJ_ODRF_Codes")
+if (!file.exists(path_codes)){
+  dir.create(path_codes)
+}
+
+filename <- file.path(path_codes,"JR_ODRF_Codes.zip")
+files_url= "https://github.com/liuyu-star/JR_ODRF_Codes/archive/refs/heads/main.zip"
+download.file(files_url, destfile=filename)
+
+unzip(filename,exdir=path_codes)
+wd=paste0(path_codes,"/JR_ODRF_Codes-main")
+
+## Remove other files.
+unlink(
+  c(paste0(path_codes,"/JR_ODRF_Codes.zip"),
+    file.path(wd,setdiff(list.files(wd), "Datasets")))
+  ,recursive = T)
+#
+#'
 #' To generate a LaTeX table from R script ODT_Regr_Error.R (Table 1 in the manuscript), run
 #'
-source("./supportingFiles/ODT_Regr_Error.R")
-#Compare the following results
-#rm(list = ls())
+setwd(wd)
+source(paste0(wd0,"/supportingFiles/ODT_Regr_Error.R"))
 #load("./Results/Tree_Regression_Error_Results.rda") 
 #View(ret)
 
 #' To generate a LaTeX table from R script ODT_Class_Error.R (Table 2 in the manuscript), run
 #'
-source("./supportingFiles/ODT_Class_Error.R")
-#Compare the following results
-#rm(list = ls())
+source(paste0(wd0,"/supportingFiles/ODT_Class_Error.R"))
 #load("./Results/Tree_Classification_Error_Results.rda") 
 #View(ret)
 
 #' To generate a LaTeX table from R script ODT_Class_Comparison.R (Classification results using the tree methods in Table 3), run
 #'
-source("./supportingFiles/ODT_Class_Comparison.R")
-#Compare the following results
-#rm(list = ls())
+source(paste0(wd0,"/supportingFiles/ODT_Class_Comparison.R"))
 #load("./Results/Tree_Classification_Comparison_Summaries.rda") 
 #View(MR)
 #View(Time)
-#View(Comparison)
+#View(Complexity)
 
 #' To generate a LaTeX table from R script ODT_Regr_Comparison.R (Regression results using the tree methods in Table 3), run
 #'
-source("./supportingFiles/ODT_Regr_Comparison.R")
-#Compare the following results
-#rm(list = ls())
+source(paste0(wd0,"/supportingFiles/ODT_Regr_Comparison.R"))
 #load("./Results/Tree_Regression_Comparison_Summaries.rda") 
 #View(RPE)
 #View(Time)
-#View(Comparison)
+#View(Complexity)
 
 #' To generate a LaTeX table from R script ODRF_Class_Comparison.R (Classification results using the forest methods in Table 3), run
 #'
-source("./supportingFiles/ODRF_Class_Comparison.R")
-#Compare the following results
-#rm(list = ls())
+source(paste0(wd0,"/supportingFiles/ODRF_Class_Comparison.R"))
 #load("./Results/Forest_Classification_Comparison_Summaries.rda") 
 #View(MR)
 #View(Time)
-#View(Comparison)
 
 #' To generate a LaTeX table from R script ODRF_Regr_Comparison.R (Regression results using the forest methods in Table 3), run
 #'
-source("./supportingFiles/ODRF_Regr_Comparison.R")
-#Compare the following results
-#rm(list = ls())
+source(paste0(wd0,"/supportingFiles/ODRF_Regr_Comparison.R"))
 #load("./Results/Forest_Regression_Comparison_Summaries.rda") 
 #View(RPE)
 #View(Time)
-#View(Comparison)
+
+
+## remove downloaded files
+unlink(file.path(wd,"Datasets"),recursive = T)
