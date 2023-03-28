@@ -13,7 +13,7 @@
 #
 # Data and scripts used to create the manuscript are available in a
 # Github project 'RJ_ODRF_Codes' that can be download from link 
-# https://github.com/liuyu-star/JSS_ODRF_Codes. The scripts can 
+# https://github.com/liuyu-star/RJ_ODRF_Codes. The scripts can 
 # alternatively be downloaded from the online RJ submission. 
 
 

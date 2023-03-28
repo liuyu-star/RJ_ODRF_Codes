@@ -5,11 +5,11 @@ This document ('ODRF_calculations_in_the_manuscript.R') contains the replication
 
 ## Data and scripts used in the manuscript
 Data and scripts used to create the manuscript are available in a supplementary Github project 'RJ_ODRF_Codes' that can be download from link 
-https://github.com/liuyu-star/JSS_ODRF_Codes. The scripts can alternatively be downloaded from the online R Journal.
+https://github.com/liuyu-star/RJ_ODRF_Codes. The scripts can alternatively be downloaded from the online R Journal.
 
 ## Data download
 
-Data sets used in the manuscript are too large be submitted directly. However, you can access them by downloading the "Datasets" folder from https://github.com/liuyu-star/JSS_ODRF_Codes.
+Data sets used in the manuscript are too large be submitted directly. However, you can access them by downloading the "Datasets" folder from https://github.com/liuyu-star/RJ_ODRF_Codes.
 To do so, please ensure that you are in the current working directory of R and then proceed with the download.
 
 ## Attention
