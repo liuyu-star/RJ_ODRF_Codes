@@ -1,5 +1,3 @@
-rm(list = ls())
-
 library(foreach)
 library(doParallel)
 library(rpart);

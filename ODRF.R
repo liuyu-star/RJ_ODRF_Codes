@@ -1,8 +1,8 @@
 ## Replication script for "ODRF: An R Package for Oblique Decision Tree 
 ## and Its Random Forest" submitted to the R Journal.
 #
-# This document ('Replicating_calculations_in_the_manuscript.R') contains the replication 
-# script for "ODRF: An R Package for Oblique Decision Tree and Its Random Forest" for 
+# This document ('ODRF.R') contains the replication script for 
+# "ODRF: An R Package for Oblique Decision Tree and Its Random Forest" for 
 # consideration of publication in the R Journal. 
 # Following the R Journal author guidelines, the replication script contains the exact code 
 # used to reproduce the calculation in the manuscript. You have three ways to 
@@ -23,52 +23,54 @@
 # you can access them by downloading the "Datasets" folder from
 #     https://github.com/liuyu-star/RJ_ODRF_Codes. 
 # To do so, please ensure that you are in the current working directory of R and 
-# then proceed with the download.
+# then proceed with the download. Of course you can also follow our way to get 
+# the data automatically without downloading it manually.
 
  
 ## Attention
 #
 # Before proceeding with the Section 4 (Real examples) of the manuscript, 
-# this file 'ODRF_calculations_in_the_manuscript.R' and 2 folders: 
-#     'Datasets', 
-#     'supportingFiles', 
-# must be placed under the R workspace (getwd()).
-
+# this file 'ODRF.R' and folder 'supportingFiles', must be placed under the R workspace (getwd()).
+# If you manually download the 'Datasets' folder from the Github project 'RJ_ODRF_Codes',
+# you should also put it under the R workspace.
 
 ###################################################
 ### code chunk number 1: preliminaries
 ###################################################
-options(prompt = "R> ", continue = "+  ", width = 70, useFancyQuotes = FALSE)
+#options(prompt = "R> ", continue = "+  ", width = 70, useFancyQuotes = FALSE)
 #Section 3, Section 4 and Section 5.1
 if(!require("rpart",quietly = T)){
   install.packages("rpart", quiet = TRUE)
 }
 library(rpart)
+
 # install 'ODRF'
-#First way: Install via offline package.
 if(!require("ODRF",quietly = T)){
-  if(!require("doParallel",quietly = T)){
-    install.packages("doParallel", quiet = TRUE)
-  }
-  if(!require("foreach",quietly = T)){
-    install.packages("foreach", quiet = TRUE)
-  }
-  if(!require("Pursuit",quietly = T)){
-    install.packages("Pursuit", quiet = TRUE)
-  }
-  if(!require("RcppArmadillo",quietly = T)){
-    install.packages("RcppArmadillo", quiet = TRUE)
-  }
-  if(!require("partykit",quietly = T)){
-    install.packages("partykit", quiet = TRUE)
-  }
-  install.packages("./supportingFiles/ODRF_0.0.3.tar.gz", repos = NULL, type = "source")
-}
+#First way: Install via offline package.
+#if(!require("ODRF",quietly = T)){
+#  if(!require("doParallel",quietly = T)){
+#    install.packages("doParallel", quiet = TRUE)
+#  }
+#  if(!require("foreach",quietly = T)){
+#    install.packages("foreach", quiet = TRUE)
+#  }
+#  if(!require("Pursuit",quietly = T)){
+#    install.packages("Pursuit", quiet = TRUE)
+#  }
+#  if(!require("RcppArmadillo",quietly = T)){
+#    install.packages("RcppArmadillo", quiet = TRUE)
+#  }
+#  if(!require("partykit",quietly = T)){
+#    install.packages("partykit", quiet = TRUE)
+#  }
+#  install.packages("./supportingFiles/ODRF_0.0.3.tar.gz", repos = NULL, type = "source")
+#}
 #Second way: Install via Github.
 # install.packages("devtools")
 #devtools::install_github("liuyu-star/ODRF")
 #Third way: Install via CRAN.
-#install.packages("ODRF")
+install.packages("ODRF")
+}
 library(ODRF)
 
 if(!require("randomForest",quietly = T)){
@@ -100,9 +102,6 @@ if(!require("evtree",quietly = T)){
 if(!require("oblique.tree",quietly = T)){
   if(!require("tree",quietly = T)){
     install.packages("tree", quiet = TRUE)
-  }
-  if(!require("glmnet",quietly = T)){
-    install.packages("glmnet", quiet = TRUE)
   }
   install.packages("./supportingFiles/oblique.tree_1.1.1.tar.gz", repos = NULL, type = "source")
 }
@@ -178,7 +177,6 @@ if(!require("obliqueRF",quietly = T)){
 #' 
 #' There was no code in this two section (outside of installing and loading ODRF).
 
-#Stangle("D:/LaTex/JSS/Sweave/ODRF-JSS2/ODRF.Rnw")
 ## ------------------------------------------------------------------------------------------------
 ## ------------------------------------------------------------------------------------------------
 #' # 3. Overview of ODRF functions
@@ -354,7 +352,8 @@ makeRotMat <- function(dimX, dimProj, numProj, ...) {
   return(RotMat)
 }
 set.seed(35)
-(RotMat1 <- makeRotMat(dimX = 5, dimProj = 3, numProj = 2))
+RotMat1 <- makeRotMat(dimX = 5, dimProj = 3, numProj = 2)
+RotMat1
 
 
 ###################################################
@@ -367,9 +366,9 @@ makePP <- function(X, y, ...) {
   return(theta)
 }
 set.seed(35)
-(RotMat3 <- RotMatMake(X = X, y = y, RotMatFun = "makeRotMat", 
-                       PPFun = "makePP", paramList = list(dimX = 5, dimProj = 3, numProj = 2)))
-
+RotMat3 <- RotMatMake(X = X, y = y, RotMatFun = "makeRotMat", 
+                       PPFun = "makePP", paramList = list(dimX = 5, dimProj = 3, numProj = 2))
+RotMat3
 
 ###################################################
 ### code chunk number 15: Train ODT with RotMatMake
@@ -493,6 +492,8 @@ plot(varimp, nvar = 10, digits = 0, main = "")
 #' 
 ## ENTER DESTINATION PATH FOR DATA DOWNLOADS.
 wd0=getwd()
+wd=wd0
+if (!file.exists("Datasets")){
 path_codes=file.path(wd0, "RJ_ODRF_Codes")
 if (!file.exists(path_codes)){
   dir.create(path_codes)
@@ -510,11 +511,15 @@ unlink(
   c(paste0(path_codes,"/JR_ODRF_Codes.zip"),
     file.path(wd,setdiff(list.files(wd), "Datasets")))
   ,recursive = T)
-#
+}
+
+setwd(wd)
+if (!file.exists("Results")){
+dir.create("Results")
+}
 #'
 #' To generate a LaTeX table from R script ODT_Regr_Error.R (Table 1 in the manuscript), run
 #'
-setwd(wd)
 source(paste0(wd0,"/supportingFiles/ODT_Regr_Error.R"))
 #load("./Results/Tree_Regression_Error_Results.rda") 
 #View(ret)
